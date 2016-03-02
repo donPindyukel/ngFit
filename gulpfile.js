@@ -69,7 +69,10 @@ gulp.task('webserver', function() {
   gulp.src('builds/dist/')
       .pipe(webserver({
         livereload: true,
-        open: true
+        open: false,
+        proxies:{
+                 target: 'http:/ngfit.loc', 
+                 }
       }));
 });
 

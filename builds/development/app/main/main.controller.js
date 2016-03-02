@@ -1,5 +1,5 @@
 
-(function () {
+;(function () {
 angular.module("ngFit.main",["ngRoute"])
  .config(ngFitMain)
  .controller("MainCtrl",MainCtrl);

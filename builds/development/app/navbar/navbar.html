@@ -17,7 +17,11 @@
               <a href="#/contact">Contact us</a>
             </li>
             <li>
-              <a href="" data-toggle="modal" data-target="#simple-dialog">Sign in</a>
+            <ul class="nav navbar-nav" ng-controller="StatusCtrl as sc">
+              <li ng-show="sc.getUsername()"><a href="">{{sc.getUsername()}}</a></li>
+              <li  ng-hide="sc.getUsername()"><a href="" data-toggle="modal" data-target="#simple-dialog">Login</a></li>
+              <li><a href="" ng-show="sc.getUsername()" ng-click="sc.logout()">Logout</a></li>
+            </ul>
             </li>
 
           </ul>

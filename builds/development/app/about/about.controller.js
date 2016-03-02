@@ -1,5 +1,5 @@
 (function () { 
-angular.module("ngFit.about",["ngRoute"])
+angular.module("ngFit.about",["ngRoute", "ngFit.status"])
  .config(navAbout)
  .controller("AboutCtrl",AboutCtrl);
 
@@ -9,7 +9,20 @@ navAbout.$inject = ['$routeProvider'];
 		.when("/about",{
 			templateUrl:"app/about/about.html",
 			controller: "AboutCtrl",
-			controllerAs:"abt"
+			controllerAs:"abt",
+			resolve: {
+				user: function (Auth,$q,$location) {
+                       	var user = Auth.getUsername();
+                       	if(user) {
+                       		return user;
+                       	}
+                       	else{
+                       		$location.path('/');
+                       		//angular.element.find("#simple-dialog");
+				      	    return $q.reject({unAuthorized: true});
+				             }
+			}
+		             }
 		});
 };
 
