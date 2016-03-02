@@ -12,7 +12,8 @@ angular
 		              "ngFit.main",
 		              "ngFit.fitfire.service",
 		              "ngFit.status",
-		              "ngCookies"
+		              "ngCookies",
+		              "Authentication"
 
 		              
 		            ])

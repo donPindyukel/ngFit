@@ -12,7 +12,8 @@ angular
 		              "ngFit.main",
 		              "ngFit.fitfire.service",
 		              "ngFit.status",
-		              "ngCookies"
+		              "ngCookies",
+		              "Authentication"
 
 		              
 		            ])
@@ -33,6 +34,58 @@ function ngFitConfig ($routeProvider, $logProvider/*, $locationProvider*/) {
 
 })();
 
+;(function(){
+	"use strict"
+
+	angular.module("Authentication", [
+                                       "firebase"
+		                               ])
+	.factory("authentication", AuthenticationFactory)
+
+	AuthenticationFactory.$inject = ['$firebaseAuth','$rootScope','FIREBASE_URL'];
+	function AuthenticationFactory($firebaseAuth, $rootScope,FIREBASE_URL){
+
+		var ref = new Firebase(FIREBASE_URL);
+
+		//var auth = $firebaseAuth(ref);
+		
+		function authHandle (error, authData){
+			if(error){
+				console.log("login failed!", error);
+			}else{ 
+				console.log("Authenticated successfully", authData);	
+			}
+		}
+
+		var authObj = {
+				login: function(_user, authHndl){
+
+					authHndl = typeof authHndl !=='undefined' ? authHndl : authHandle;
+
+					ref.authWithPassword(_user, authHndl);
+					
+				},
+
+				logout: function(){
+						ref.unauth();
+				},
+
+				signedIn: function(){
+					return !!ref.getAuth();
+				},
+
+				getAuth: function(){
+					return ref.getAuth();
+				},
+		};
+
+		$rootScope.signedIn = function(){
+			return authObj.signedIn();
+		};
+
+		return authObj;
+	}
+})();
 ;(function(){
 
 
@@ -99,7 +152,7 @@ navAbout.$inject = ['$routeProvider'];
 		.when("/about",{
 			templateUrl:"app/about/about.html",
 			controller: "AboutCtrl",
-			controllerAs:"abt",
+			controllerAs:"abt"/*,
 			resolve: {
 				user: function (Auth,$q,$location) {
                        	var user = Auth.getUsername();
@@ -111,17 +164,20 @@ navAbout.$inject = ['$routeProvider'];
                        		//angular.element.find("#simple-dialog");
 				      	    return $q.reject({unAuthorized: true});
 				             }
-			}
-		             }
+			 	}
+		             }*/
 		});
 };
 
-AboutCtrl.$inject = ['$scope','$rootScope','someValue'];
-function AboutCtrl($scope,$rootScope,someValue) {
+AboutCtrl.$inject = ['$scope','$rootScope','someValue','authentication'];
+function AboutCtrl($scope,$rootScope,someValue,authentication) {
 
 	var vm = this;
     vm.some = someValue.a;
 	$rootScope.curPath = "about";
+
+	vm.authInfo = authentication.getAuth();
+
 }
 }());
 (function () {
@@ -230,11 +286,10 @@ function MainCtrl($scope, $rootScope, someValue, $log, fitfire) {
 			                     ])
 		
 		.controller('AuthCtrl', AuthController)
-		.controller('StatusCtrl', SatusController)
-		.factory('Auth', AuthFactory);
+		.controller('StatusCtrl', SatusController)/*.factory('Auth', AuthFactory)*/;
 
 
-		AuthFactory.$inject = ['$http','SERVER_URL','$log','$cookies'];
+		/*AuthFactory.$inject = ['$http','SERVER_URL','$log','$cookies'];
  		function AuthFactory ($http,SERVER_URL,$log,$cookies) {
  			var auth ={};
             
@@ -280,39 +335,43 @@ function MainCtrl($scope, $rootScope, someValue, $log, fitfire) {
  			}
 
  			return auth;
- 		}
+ 		}*/
 
 
-        AuthController.$inject = ['$scope', '$log', 'Auth'];
-		function AuthController($scope, $log, Auth) {
+        AuthController.$inject = ['$scope', '$log', 'authentication'];
+		function AuthController($scope, $log, authentication) {
 				var vm = this;
 
 				vm.credentails = {
-					username:null,
+					email:null,
 					password:null
 				}
 
 				vm.login = function(){
-					//$log.debug('Login');
-					Auth.login(vm.credentails.username, vm.credentails.password);
-				};
+					authentication.login(vm.credentails)
+				}
+
+				// vm.login = function(){
+				// 	//$log.debug('Login');
+				// 	Auth.login(vm.credentails.username, vm.credentails.password);
+				// };
 				
-				vm.username = function(){
-					return Auth.getUsername();
-				};
+				// vm.username = function(){
+				// 	return Auth.getUsername();
+				// };
 
  		};
 
- 		SatusController.$inject = ['$scope', '$log', 'Auth','$cookies'];
- 		function SatusController($scope,$log,Auth,$cookies){
+ 		SatusController.$inject = ['$scope', '$log', 'authentication','$cookies'];
+ 		function SatusController($scope,$log,authentication,$cookies){
  				var vm = this;
 
  				vm.getUsername = function(){
- 					return Auth.getUsername();
+ 					//return Auth.getUsername();
  				};
 
  				vm.logout = function(){
- 					Auth.logout();
+ 					authentication.logout();
  					
  				}
 

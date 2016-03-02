@@ -9,7 +9,7 @@ navAbout.$inject = ['$routeProvider'];
 		.when("/about",{
 			templateUrl:"app/about/about.html",
 			controller: "AboutCtrl",
-			controllerAs:"abt",
+			controllerAs:"abt"/*,
 			resolve: {
 				user: function (Auth,$q,$location) {
                        	var user = Auth.getUsername();
@@ -21,16 +21,19 @@ navAbout.$inject = ['$routeProvider'];
                        		//angular.element.find("#simple-dialog");
 				      	    return $q.reject({unAuthorized: true});
 				             }
-			}
-		             }
+			 	}
+		             }*/
 		});
 };
 
-AboutCtrl.$inject = ['$scope','$rootScope','someValue'];
-function AboutCtrl($scope,$rootScope,someValue) {
+AboutCtrl.$inject = ['$scope','$rootScope','someValue','authentication'];
+function AboutCtrl($scope,$rootScope,someValue,authentication) {
 
 	var vm = this;
     vm.some = someValue.a;
 	$rootScope.curPath = "about";
+
+	vm.authInfo = authentication.getAuth();
+
 }
 }());

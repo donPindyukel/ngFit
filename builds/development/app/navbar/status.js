@@ -7,11 +7,10 @@
 			                     ])
 		
 		.controller('AuthCtrl', AuthController)
-		.controller('StatusCtrl', SatusController)
-		.factory('Auth', AuthFactory);
+		.controller('StatusCtrl', SatusController)/*.factory('Auth', AuthFactory)*/;
 
 
-		AuthFactory.$inject = ['$http','SERVER_URL','$log','$cookies'];
+		/*AuthFactory.$inject = ['$http','SERVER_URL','$log','$cookies'];
  		function AuthFactory ($http,SERVER_URL,$log,$cookies) {
  			var auth ={};
             
@@ -57,39 +56,43 @@
  			}
 
  			return auth;
- 		}
+ 		}*/
 
 
-        AuthController.$inject = ['$scope', '$log', 'Auth'];
-		function AuthController($scope, $log, Auth) {
+        AuthController.$inject = ['$scope', '$log', 'authentication'];
+		function AuthController($scope, $log, authentication) {
 				var vm = this;
 
 				vm.credentails = {
-					username:null,
+					email:null,
 					password:null
 				}
 
 				vm.login = function(){
-					//$log.debug('Login');
-					Auth.login(vm.credentails.username, vm.credentails.password);
-				};
+					authentication.login(vm.credentails)
+				}
+
+				// vm.login = function(){
+				// 	//$log.debug('Login');
+				// 	Auth.login(vm.credentails.username, vm.credentails.password);
+				// };
 				
-				vm.username = function(){
-					return Auth.getUsername();
-				};
+				// vm.username = function(){
+				// 	return Auth.getUsername();
+				// };
 
  		};
 
- 		SatusController.$inject = ['$scope', '$log', 'Auth','$cookies'];
- 		function SatusController($scope,$log,Auth,$cookies){
+ 		SatusController.$inject = ['$scope', '$log', 'authentication','$cookies'];
+ 		function SatusController($scope,$log,authentication,$cookies){
  				var vm = this;
 
  				vm.getUsername = function(){
- 					return Auth.getUsername();
+ 					//return Auth.getUsername();
  				};
 
  				vm.logout = function(){
- 					Auth.logout();
+ 					authentication.logout();
  					
  				}
 
