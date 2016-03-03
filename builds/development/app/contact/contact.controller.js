@@ -10,15 +10,21 @@ function navContact ($routeProvider) {
 		.when("/contact",{
 			templateUrl:"/app/contact/contact.html",
 			controller: "ContactCtrl",
-			controllerAs:"cnt"
+			controllerAs:"cnt",
+			resolve: {
+				currentAuth : function(authentication, $location) {
+					return authentication.ngAuth().$requireAuth().then(null, function(){$location.path('/');});
+					}
+			}
 		});
 };
 
-ContactCtrl.$inject = ['$scope','$rootScope','someValue'];
-function ContactCtrl($scope,$rootScope,someValue) {
+ContactCtrl.$inject = ['$scope','$rootScope','currentAuth'];
+function ContactCtrl($scope,$rootScope,currentAuth) {
 	var vm = this;
-    someValue.a = "LeteerB";
 	$rootScope.curPath = "contact";
+
+	vm.curAuth = currentAuth;
 
 
 };

@@ -9,28 +9,19 @@ navAbout.$inject = ['$routeProvider'];
 		.when("/about",{
 			templateUrl:"app/about/about.html",
 			controller: "AboutCtrl",
-			controllerAs:"abt"/*,
+			controllerAs:"abt",
 			resolve: {
-				user: function (Auth,$q,$location) {
-                       	var user = Auth.getUsername();
-                       	if(user) {
-                       		return user;
-                       	}
-                       	else{
-                       		$location.path('/');
-                       		//angular.element.find("#simple-dialog");
-				      	    return $q.reject({unAuthorized: true});
-				             }
-			 	}
-		             }*/
+				currentAuth : function(authentication, $location) {
+					return authentication.ngAuth().$requireAuth().then(null, function(){$location.path('/');});
+					}
+			}
 		});
 };
 
-AboutCtrl.$inject = ['$scope','$rootScope','someValue','authentication'];
-function AboutCtrl($scope,$rootScope,someValue,authentication) {
+AboutCtrl.$inject = ['$scope','$rootScope','authentication'];
+function AboutCtrl($scope,$rootScope,authentication) {
 
 	var vm = this;
-    vm.some = someValue.a;
 	$rootScope.curPath = "about";
 
 	vm.authInfo = authentication.getAuth();

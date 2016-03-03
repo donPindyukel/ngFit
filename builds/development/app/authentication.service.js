@@ -6,19 +6,31 @@
 		                               ])
 	.factory("authentication", AuthenticationFactory)
 
-	AuthenticationFactory.$inject = ['$firebaseAuth','$rootScope','FIREBASE_URL'];
-	function AuthenticationFactory($firebaseAuth, $rootScope,FIREBASE_URL){
+	AuthenticationFactory.$inject = ['$firebaseAuth','$rootScope','FIREBASE_URL','$log', '$firebaseObject'];
+	function AuthenticationFactory($firebaseAuth, $rootScope,FIREBASE_URL, $log, $firebaseObject){
 
 		var ref = new Firebase(FIREBASE_URL);
 
-		//var auth = $firebaseAuth(ref);
+		function authDataCallBack(authData){
+
+ 			if(authData) {
+ 				var userRef = ref.child("users").child(authData.uid);
+ 				var user = $firebaseObject(userRef);
+ 				user.$loaded().then(function(){
+ 					$rootScope.currentUser = user;
+ 				});
+ 			}else{
+ 				$rootScope.currentUser = null;
+ 			}
+ 		};
+
+
+		ref.onAuth(authDataCallBack);
+		var auth = $firebaseAuth(ref);
 		
-		function authHandle (error, authData){
-			if(error){
-				console.log("login failed!", error);
-			}else{ 
+		function authHandle (authData){
+		
 				console.log("Authenticated successfully", authData);	
-			}
 		}
 
 		var authObj = {
@@ -26,7 +38,10 @@
 
 					authHndl = typeof authHndl !=='undefined' ? authHndl : authHandle;
 
-					ref.authWithPassword(_user, authHndl);
+					auth.$authWithPassword(_user).then(authHndl)
+					.catch(function(error){
+						$log.error("Error in login function", error);
+					});
 					
 				},
 
@@ -41,6 +56,41 @@
 				getAuth: function(){
 					return ref.getAuth();
 				},
+
+				getEmail: function(){
+					if (authObj.signedIn())
+
+				     	return ref.getAuth().password.email;
+				    return null; 
+				},
+
+				register: function (_user){
+
+					return auth.$createUser({
+						email:_user.email,
+						password:_user.password
+					}).then(function(userData){
+						$log.debug("User "+userData.uid+" created!");
+						var userRef = ref.child("users").child(userData.uid);
+						userRef.set({
+							firstname:_user.firstname,
+							lastname:_user.lastname,
+							email:_user.email,
+							date:Firebase.ServerValue.TIMESTAMP
+
+						});
+						return auth.$authWithPassword({
+							email:_user.email,
+							password:_user.password
+						});
+					}).catch(function(error){
+						$log.error("Create user error", error);
+					});
+				},
+
+				ngAuth: function (){
+					return auth;
+				}
 		};
 
 		$rootScope.signedIn = function(){

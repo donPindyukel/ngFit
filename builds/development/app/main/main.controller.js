@@ -18,14 +18,12 @@ ngFitMain.$inject = ['$routeProvider'];
 
 };
 
-MainCtrl.$inject = ['$scope', '$rootScope', 'someValue', '$log', 'fitfire'];
-function MainCtrl($scope, $rootScope, someValue, $log, fitfire) {
+MainCtrl.$inject = ['$scope', '$rootScope', '$log', 'fitfire'];
+function MainCtrl($scope, $rootScope, $log, fitfire) {
   	$log.debug('MainCtrl start');
     var VM = this;
      
     $rootScope.curPath = "home";
-    someValue.a = "letterA";
-    VM.some = someValue.a;
     
 
 	VM.title = "Это приветственная страница";

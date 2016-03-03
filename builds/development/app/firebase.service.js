@@ -11,8 +11,7 @@
 
 		 var self = this;
 		 var ref = new Firebase(FIREBASE_URL);
-        // var refObj = $firebaseObject(ref);
-        // var refArr = $firebaseArray(ref);
+
          
  		 var usersRef = ref.child('users');
  		 var usersArr = $firebaseArray(usersRef);
@@ -23,9 +22,6 @@
 
          };
 
-        /* this.addUser = function(_user){
-         	usersRef.push(_user);
-         };*/
  		 
  		 this.addUser = function(_user, cb){
          	var usersLength = $firebaseObject(ref.child('options').child('usersLength'));
@@ -43,13 +39,7 @@
          	return usersArr.$save(_user);
          };
          
-         // refObj.$loaded(function(){
-         // 	self.dbObj = refObj;
-         // });
-     
-         //      refArr.$loaded(function() {
-         //      	self.dbArr = refArr;
-         // });
+
 	}
 
 })();

@@ -18,7 +18,6 @@ angular
 		              
 		            ])
     .config(ngFitConfig)
-    .value("someValue", {})
     .constant('SERVER_URL', 'http://ngfit.loc/auth.php')
     .constant("FIREBASE_URL", "https://burning-heat-1291.firebaseio.com/");
  
