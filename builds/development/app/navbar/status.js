@@ -30,6 +30,10 @@
 					authentication.register(vm.nUser);
 				};
 
+				vm.googleLogin = function () {
+					authentication.googleLogin();
+				};
+
 
  		};
 

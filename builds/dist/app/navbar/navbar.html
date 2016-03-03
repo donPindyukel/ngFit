@@ -18,6 +18,7 @@
             </li>
             <li>
             <ul class="nav navbar-nav" ng-controller="StatusCtrl as sc">
+              <li ng-show="signedIn()"><a href=""><img ng-src="{{currentUser.avatar}}" class="header-avatar img-circle" width="30" alt=""></a></li>
               <li ng-show="signedIn()"><a href="">{{currentUser.firstname}} {{currentUser.lastname}}</a></li>
               <li  ng-hide="signedIn()"><a href="" data-toggle="modal" data-target="#simple-dialog">Login</a></li>
               <li  ng-hide="signedIn()"><a href="" data-toggle="modal" data-target="#registration-dialog">Register</a></li>

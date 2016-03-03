@@ -49,7 +49,11 @@ function ngFitConfig ($routeProvider, $logProvider/*, $locationProvider*/) {
 		function authDataCallBack(authData){
 
  			if(authData) {
- 				var userRef = ref.child("users").child(authData.uid);
+ 				var userRef;
+ 				if (authData.google && authData.google.id)
+ 					userRef = ref.child("users").child(authData.google.id);
+ 				else
+ 					userRef = ref.child("users").child(authData.uid);
  				var user = $firebaseObject(userRef);
  				user.$loaded().then(function(){
  					$rootScope.currentUser = user;
@@ -66,18 +70,56 @@ function ngFitConfig ($routeProvider, $logProvider/*, $locationProvider*/) {
 		function authHandle (authData){
 		
 				console.log("Authenticated successfully", authData);	
+		};
+
+
+		function socialAuthHandle (error, authData){
+			if (error){
+				console.warn("Login failed",error);
+
+			}else{
+				console.log("Social logged in ", authData);
+				var userRef = ref.child("users").child(authData.google.id);
+				var user = $firebaseObject(userRef);
+				user.$loaded(function(){
+					if(user.email){
+						userRef.child("lastActivity").set(Firebase.ServerValue.TIMESTAMP);
+					}else{
+						userRef.set({
+							"email": authData.google.email,
+							"name": authData.google.displayName,
+							"avatar": authData.google.cachedUserProfile.picture,
+							"id": authData.google.id,
+							"token": authData.token,
+							"uid": authData.uid,
+							"expires": authData.expires,
+							"accessToken": authData.google.accessToken,
+							"lastActivity": Firebase.ServerValue.TIMESTAMP
+
+						});
+					}
+				});
+			}
+
 		}
 
 		var authObj = {
 				login: function(_user, authHndl){
 
-					authHndl = typeof authHndl !=='undefined' ? authHndl : authHandle;
+					authHndl = typeof authHndl !=='undefined' ? authHndl : socialAuthHandle;
 
 					auth.$authWithPassword(_user).then(authHndl)
 					.catch(function(error){
 						$log.error("Error in login function", error);
 					});
 					
+				},
+
+				googleLogin: function(_user, authHndl) {
+					authHndl = typeof authHndl !=='undefined' ? authHndl : socialAuthHandle;
+					ref.authWithOAuthPopup("google", authHndl, {
+						scope: "profile,\ email"							
+					});
 				},
 
 				logout: function(){
@@ -341,6 +383,10 @@ function MainCtrl($scope, $rootScope, $log, fitfire) {
 
 				vm.register = function(){
 					authentication.register(vm.nUser);
+				};
+
+				vm.googleLogin = function () {
+					authentication.googleLogin();
 				};
 
 

@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-body">
         <h2>Sign In</h2>
-        <form name="loginForm" ng-submit="ac.login()">
+        <form name="loginForm">
         	
         	<div class="form-group">
         		<input type="email" class="form-control" ng-model="ac.credentails.email" placeholder="Email">
@@ -11,7 +11,8 @@
         	<div class="form-group">
         		<input type="password" class="form-control" ng-model="ac.credentails.password" placeholder="Password">
         	</div>
-        	<button type="submit" class="btn btn-primary">Login</button>
+        	<button  class="btn btn-primary" ng-click="ac.login()">Login</button>
+          <button  class="btn btn-danger" ng-click="ac.googleLogin()">Google Login</button>
         </form>
       </div>
     </div>
