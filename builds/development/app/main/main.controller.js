@@ -9,6 +9,7 @@ angular.module("ngFit.main",["ngRoute"])
 
 ngFitMain.$inject = ['$routeProvider']; 
  function ngFitMain ($routeProvider) {
+    console.log("Main config")
 	$routeProvider
 		.when("/",{
 			templateUrl:"/app/main/main.html",

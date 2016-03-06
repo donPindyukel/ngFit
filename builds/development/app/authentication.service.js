@@ -8,7 +8,7 @@
 
 	AuthenticationFactory.$inject = ['$firebaseAuth','$rootScope','FIREBASE_URL','$log', '$firebaseObject'];
 	function AuthenticationFactory($firebaseAuth, $rootScope,FIREBASE_URL, $log, $firebaseObject){
-
+        console.log("Auth Factory");
 		var ref = new Firebase(FIREBASE_URL);
 
 		function authDataCallBack(authData){

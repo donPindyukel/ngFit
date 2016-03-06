@@ -8,7 +8,7 @@
 
 	fitfire.$inject = ['FIREBASE_URL','$firebaseObject','$firebaseArray','$log'];
 	function fitfire(FIREBASE_URL, $firebaseObject,$firebaseArray,$log) {
-
+      console.log("fitfire service")
 		 var self = this;
 		 var ref = new Firebase(FIREBASE_URL);
 

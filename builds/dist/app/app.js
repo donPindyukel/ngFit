@@ -7,27 +7,34 @@ $.material.init();
 angular
 	.module('ngFit', [
 		              "ngRoute",
-		              "ngFit.about",
-		              "ngFit.contact",
-		              "ngFit.main",
 		              "ngFit.fitfire.service",
 		              "ngFit.status",
 		              "ngCookies",
-		              "Authentication"
+		              "Authentication",
+		              "ngFit.main",
+		              "ngFit.about",
+		              "ngFit.contact"
+		              
 
 		              
 		            ])
     .config(ngFitConfig)
     .constant('SERVER_URL', 'http://ngfit.loc/auth.php')
-    .constant("FIREBASE_URL", "https://burning-heat-1291.firebaseio.com/");
+    .constant("FIREBASE_URL", "https://burning-heat-1291.firebaseio.com/")
+    .run(Run);
  
 
 function ngFitConfig ($routeProvider, $logProvider/*, $locationProvider*/) {
+	console.log("Config app");
 	$routeProvider
 		.otherwise({redirectTo:'/'});
 	//$locationProvider.html5Mode(true);
 	$logProvider.debugEnabled(true);
 		
+}
+
+function Run(authentication, fitfire){
+	console.log('Run');
 }
 
 
@@ -43,7 +50,7 @@ function ngFitConfig ($routeProvider, $logProvider/*, $locationProvider*/) {
 
 	AuthenticationFactory.$inject = ['$firebaseAuth','$rootScope','FIREBASE_URL','$log', '$firebaseObject'];
 	function AuthenticationFactory($firebaseAuth, $rootScope,FIREBASE_URL, $log, $firebaseObject){
-
+        console.log("Auth Factory");
 		var ref = new Firebase(FIREBASE_URL);
 
 		function authDataCallBack(authData){
@@ -187,7 +194,7 @@ function ngFitConfig ($routeProvider, $logProvider/*, $locationProvider*/) {
 
 	fitfire.$inject = ['FIREBASE_URL','$firebaseObject','$firebaseArray','$log'];
 	function fitfire(FIREBASE_URL, $firebaseObject,$firebaseArray,$log) {
-
+      console.log("fitfire service")
 		 var self = this;
 		 var ref = new Firebase(FIREBASE_URL);
 
@@ -223,12 +230,13 @@ function ngFitConfig ($routeProvider, $logProvider/*, $locationProvider*/) {
 
 })();
 (function () { 
-angular.module("ngFit.about",["ngRoute", "ngFit.status"])
+angular.module("ngFit.about",["ngRoute"])
  .config(navAbout)
  .controller("AboutCtrl",AboutCtrl);
 
 navAbout.$inject = ['$routeProvider'];
  function navAbout ($routeProvider) {
+ 	console.log("About config");
 	$routeProvider
 		.when("/about",{
 			templateUrl:"app/about/about.html",
@@ -244,7 +252,7 @@ navAbout.$inject = ['$routeProvider'];
 
 AboutCtrl.$inject = ['$scope','$rootScope','authentication'];
 function AboutCtrl($scope,$rootScope,authentication) {
-
+   console.log("About controller");
 	var vm = this;
 	$rootScope.curPath = "about";
 
@@ -260,6 +268,7 @@ angular.module("ngFit.contact",["ngRoute"])
 
 navContact.$inject = ['$routeProvider'];
 function navContact ($routeProvider) {
+	 console.log("Contact config");
 	$routeProvider
 		.when("/contact",{
 			templateUrl:"/app/contact/contact.html",
@@ -273,15 +282,36 @@ function navContact ($routeProvider) {
 		});
 };
 
-ContactCtrl.$inject = ['$scope','$rootScope','currentAuth'];
-function ContactCtrl($scope,$rootScope,currentAuth) {
+ContactCtrl.$inject = ['$scope','$rootScope','currentAuth','$timeout'];
+function ContactCtrl($scope,$rootScope,currentAuth,$timeout) {
+	 console.log("Contact controller");
 	var vm = this;
 	$rootScope.curPath = "contact";
 
 	vm.curAuth = currentAuth;
 
+	vm.message = "gfhj";
 
-};
+	$scope.$watch("cnt.message",function(newVal,oldVal){
+		console.log("$watch");
+		console.log("oldVal",oldVal);
+		console.log("newVal",newVal);
+	});
+
+	$scope.$on('init', function(event,data){
+		console.log("contact init event");
+		vm.message = "data";
+	});
+
+	$timeout(function(){
+		
+			vm.message = "Hello!";
+		console.log(vm.message);},3000);
+
+}
+
+
+
 }());
 
 ;(function () {
@@ -294,6 +324,7 @@ angular.module("ngFit.main",["ngRoute"])
 
 ngFitMain.$inject = ['$routeProvider']; 
  function ngFitMain ($routeProvider) {
+    console.log("Main config")
 	$routeProvider
 		.when("/",{
 			templateUrl:"/app/main/main.html",
