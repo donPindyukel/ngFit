@@ -1,9 +1,16 @@
 <h2>Здесь информация о нас</h2>
 
-<div infinite-scroll="abt.loadMore()"
-		infinite-scroll-distance="2">
-	<img
-	ng-repeat="image in abt.images"  
-	ng-src="http://placehold.it/260x200&twxt={{image}}"
-	class="img-thumbnail">
+<div class="list-group" infinite-scroll="abt.loadMore()">
+	<div ng-repeat="u in abt.users">
+		<div class="list-group-item">
+			<div class="row-picture">
+				<img  class="circle" ng-src="{{u.picture}}" alt="icon">
+			</div>
+			<div class="row-content">
+				<h4 class="list-group-item-heading">{{u.name}}</h4>
+				<p class="list-group-item-text">{{u.age}}</p>
+			</div>
+		</div>
+	</div>
+	<div class="list-group-separator"></div>
 </div>

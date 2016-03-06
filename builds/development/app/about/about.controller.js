@@ -19,21 +19,23 @@ navAbout.$inject = ['$routeProvider'];
 		});
 };
 
-AboutCtrl.$inject = ['$scope','$rootScope','authentication'];
-function AboutCtrl($scope,$rootScope,authentication) {
+AboutCtrl.$inject = ['$scope','$rootScope','authentication','fitfire'];
+function AboutCtrl($scope,$rootScope,authentication,fitfire) {
    console.log("About controller");
 	var vm = this;
 	$rootScope.curPath = "about";
 
 	vm.authInfo = authentication.getAuth();
 
-	vm.images = [1,2,3,4,5,6,7,8];
-	console.log(vm.images.length);
+	vm.users = [];
+	var last = 0;
 	vm.loadMore = function (){
-		var last = vm.images[vm.images.length-1];
-		var i = 8;
-		while (i--)
-			vm.images.push(++last);
+		fitfire.getData(""+last,20).then(function(_data){
+			angular.forEach(_data, function(elem){
+				vm.users.push(elem);
+				last++;
+			});
+		});
 	};
 
 }

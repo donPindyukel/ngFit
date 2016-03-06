@@ -15,7 +15,6 @@ angular
 		              "ngFit.about",
 		              "ngFit.contact",
 		              "infinite-scroll"
-
 		              
 
 		              

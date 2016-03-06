@@ -38,6 +38,19 @@
          this.updateUser = function (_user)	{
          	return usersArr.$save(_user);
          };
+
+         this.getData = function(_st,_len){
+           //console.log($firebaseArray(ref.child('data')));
+             var data = $firebaseArray(
+               ref.child('data')
+               .orderByKey()
+               .startAt(_st)
+               .limit(_len)
+               ).$loaded();
+
+             return data;
+
+         }
          
 
 	}
