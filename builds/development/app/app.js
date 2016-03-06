@@ -13,7 +13,9 @@ angular
 		              "Authentication",
 		              "ngFit.main",
 		              "ngFit.about",
-		              "ngFit.contact"
+		              "ngFit.contact",
+		              "infinite-scroll"
+
 		              
 
 		              

@@ -1,4 +1,9 @@
 <h2>Здесь информация о нас</h2>
 
-
-<!-- {{abt.authInfo}} -->
+<div infinite-scroll="abt.loadMore()"
+		infinite-scroll-distance="2">
+	<img
+	ng-repeat="image in abt.images"  
+	ng-src="http://placehold.it/260x200&twxt={{image}}"
+	class="img-thumbnail">
+</div>

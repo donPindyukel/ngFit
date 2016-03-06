@@ -30,6 +30,7 @@
     "angular-loader": "~1.4.0",
     "angular-i18n": "~1.4.0",
     "firebase": "~2.2.7",
-    "angularfire": "~1.1.1"
+    "angularfire": "~1.1.1",
+    "ngInfiniteScroll": "1.0.0"
   }
 }

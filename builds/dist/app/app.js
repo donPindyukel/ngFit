@@ -13,7 +13,9 @@ angular
 		              "Authentication",
 		              "ngFit.main",
 		              "ngFit.about",
-		              "ngFit.contact"
+		              "ngFit.contact",
+		              "infinite-scroll"
+
 		              
 
 		              
@@ -257,6 +259,15 @@ function AboutCtrl($scope,$rootScope,authentication) {
 	$rootScope.curPath = "about";
 
 	vm.authInfo = authentication.getAuth();
+
+	vm.images = [1,2,3,4,5,6,7,8];
+	console.log(vm.images.length);
+	vm.loadMore = function (){
+		var last = vm.images[vm.images.length-1];
+		var i = 8;
+		while (i--)
+			vm.images.push(++last);
+	};
 
 }
 }());
