@@ -264,7 +264,52 @@ function AboutCtrl($scope,$rootScope,authentication) {
 
 angular.module("ngFit.contact",["ngRoute"])
 .config(navContact)
-.controller("ContactCtrl", ContactCtrl);
+.controller("ContactCtrl", ContactCtrl)
+.factory('Son', function($q) {
+	var o = {};
+
+	o.go2Shop = function(){
+		var deferred = $q.defer();
+		setTimeout(function(){
+			deferred.notify("Я пошел в магазин " + new Date());
+		},50);
+
+		setTimeout(function(){
+			deferred.notify("Я пришел в магазин" + new Date());
+			var eggs = parseInt(Math.random()*100);
+			if (eggs % 2){
+ 				deferred.resolve(eggs);
+			}
+			else{
+				deferred.reject("Магазин закрыт!");
+			}
+		}, 2000);
+		
+		return deferred.promise;
+	};
+
+	o.go2Grandma = function(){
+		var deferred = $q.defer();
+		setTimeout(function(){
+			deferred.notify("Я пошел к бабуле " + new Date());
+		},100);
+
+		setTimeout(function(){
+			deferred.notify("Я пришел к бабуле" + new Date());
+			var eggs = parseInt(Math.random()*100);
+			if (eggs % 2){
+ 				deferred.resolve(eggs);
+			}
+			else{
+				deferred.reject("Бабуля на даче!");
+			}
+		}, 4000);
+		
+		return deferred.promise;
+	};
+
+	return o;
+});
 
 navContact.$inject = ['$routeProvider'];
 function navContact ($routeProvider) {
@@ -282,11 +327,50 @@ function navContact ($routeProvider) {
 		});
 };
 
-ContactCtrl.$inject = ['$scope','$rootScope','currentAuth','$timeout'];
-function ContactCtrl($scope,$rootScope,currentAuth,$timeout) {
+ContactCtrl.$inject = ['$scope','$rootScope','currentAuth','$timeout','Son','$q'];
+function ContactCtrl($scope,$rootScope,currentAuth,$timeout,Son,$q) {
 	 console.log("Contact controller");
 	var vm = this;
 	$rootScope.curPath = "contact";
+
+
+	
+
+	vm.sendSon = function () {
+
+		var son1 = Son.go2Shop().then(
+//+resolve
+            	function(data){
+            	console.log("Делаю яичницу из " + data + " яиц");
+  //- reject
+            }, function(error){
+            	console.log("Нет яиц. Делай бутеры!", error);
+  // notify
+            }, function(msg) {
+            	console.log("Сын1 сказал: " + msg); 
+            });
+	var son2 = Son.go2Grandma().then(
+//+resolve
+            	function(data){
+            	console.log("Молодец " + data + "");
+  //- reject
+            }, function(error){
+            	console.log("Сходишь позже ", error);
+  // notify
+            }, function(msg) {
+            	console.log("Сын2 сказал: " + msg); 
+            });
+       $q.all([son1,son2]).then(function(){
+        	console.log("Дети вернулись");
+        });
+
+	};
+
+	vm.sendDaughter = function () {
+
+    
+	};
+
 
 	vm.curAuth = currentAuth;
 
