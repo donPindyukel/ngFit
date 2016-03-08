@@ -14,7 +14,8 @@ angular
 		              "ngFit.main",
 		              "ngFit.about",
 		              "ngFit.contact",
-		              "infinite-scroll"
+		              "infinite-scroll",
+		              "ngAnimate"
 		              
 
 		              

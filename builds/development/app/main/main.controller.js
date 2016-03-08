@@ -23,7 +23,7 @@ MainCtrl.$inject = ['$scope', '$rootScope', '$log', 'fitfire'];
 function MainCtrl($scope, $rootScope, $log, fitfire) {
   	$log.debug('MainCtrl start');
     var VM = this;
-     
+    $rootScope.pageClass = "page-main";  
     $rootScope.curPath = "home";
     
 

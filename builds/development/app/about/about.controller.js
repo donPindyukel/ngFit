@@ -1,5 +1,5 @@
 (function () { 
-angular.module("ngFit.about",["ngRoute"])
+angular.module("ngFit.about",["ngRoute","ngAnimate"])
  .config(navAbout)
  .controller("AboutCtrl",AboutCtrl);
 
@@ -23,6 +23,7 @@ AboutCtrl.$inject = ['$scope','$rootScope','authentication','fitfire'];
 function AboutCtrl($scope,$rootScope,authentication,fitfire) {
    console.log("About controller");
 	var vm = this;
+	$rootScope.pageClass = "page-about";  
 	$rootScope.curPath = "about";
 
 	vm.authInfo = authentication.getAuth();
@@ -37,6 +38,8 @@ function AboutCtrl($scope,$rootScope,authentication,fitfire) {
 			});
 		});
 	};
+
+	vm.hide = true;
 
 }
 }());

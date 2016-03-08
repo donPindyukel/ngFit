@@ -14,7 +14,8 @@ angular
 		              "ngFit.main",
 		              "ngFit.about",
 		              "ngFit.contact",
-		              "infinite-scroll"
+		              "infinite-scroll",
+		              "ngAnimate"
 		              
 
 		              
@@ -244,7 +245,7 @@ function Run(authentication, fitfire){
 
 })();
 (function () { 
-angular.module("ngFit.about",["ngRoute"])
+angular.module("ngFit.about",["ngRoute","ngAnimate"])
  .config(navAbout)
  .controller("AboutCtrl",AboutCtrl);
 
@@ -268,6 +269,7 @@ AboutCtrl.$inject = ['$scope','$rootScope','authentication','fitfire'];
 function AboutCtrl($scope,$rootScope,authentication,fitfire) {
    console.log("About controller");
 	var vm = this;
+	$rootScope.pageClass = "page-about";  
 	$rootScope.curPath = "about";
 
 	vm.authInfo = authentication.getAuth();
@@ -282,6 +284,8 @@ function AboutCtrl($scope,$rootScope,authentication,fitfire) {
 			});
 		});
 	};
+
+	vm.hide = true;
 
 }
 }());
@@ -356,6 +360,8 @@ ContactCtrl.$inject = ['$scope','$rootScope','currentAuth','$timeout','Son','$q'
 function ContactCtrl($scope,$rootScope,currentAuth,$timeout,Son,$q) {
 	 console.log("Contact controller");
 	var vm = this;
+
+	$rootScope.pageClass = "page-contact";  
 	$rootScope.curPath = "contact";
 
 
@@ -447,7 +453,7 @@ MainCtrl.$inject = ['$scope', '$rootScope', '$log', 'fitfire'];
 function MainCtrl($scope, $rootScope, $log, fitfire) {
   	$log.debug('MainCtrl start');
     var VM = this;
-     
+    $rootScope.pageClass = "page-main";  
     $rootScope.curPath = "home";
     
 

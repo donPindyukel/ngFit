@@ -69,6 +69,8 @@ ContactCtrl.$inject = ['$scope','$rootScope','currentAuth','$timeout','Son','$q'
 function ContactCtrl($scope,$rootScope,currentAuth,$timeout,Son,$q) {
 	 console.log("Contact controller");
 	var vm = this;
+
+	$rootScope.pageClass = "page-contact";  
 	$rootScope.curPath = "contact";
 
 
