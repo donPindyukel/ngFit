@@ -245,8 +245,33 @@ function Run(authentication, fitfire){
 
 })();
 (function () { 
-angular.module("ngFit.about",["ngRoute","ngAnimate"])
+angular.module("ngFit.about",["ngRoute"])
  .config(navAbout)
+ .animation(".animate-new",function(){
+ 	return {
+ 			enter:function(element,done){
+ 				console.log("enter");
+ 			},
+ 			leave:function(ekement, done){
+ 				console.log("leave");
+ 			},
+ 			move:function(element,done){
+ 				console.log("move");
+ 			},
+ 			//ngShow
+ 			addClass:function(element,newClassName,done){
+ 				console.log("addClass ", newClassName);
+ 				$(element).animate({width:'0%'},done);
+ 				element.css({border:"5px solid red"});
+ 			},
+ 			//ngHide
+ 			removeClass:function(element,removeClassName,done){
+ 				console.log("removeClass ", removeClassName);
+ 				$(element).animate({width:'100%'},done);
+ 				element.css({border:"1px solid black"});
+ 			}
+ 	}
+ })
  .controller("AboutCtrl",AboutCtrl);
 
 navAbout.$inject = ['$routeProvider'];

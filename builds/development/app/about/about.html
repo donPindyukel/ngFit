@@ -3,7 +3,9 @@
 
 
 <button class="btn btn-primary" ng-click="abt.hide=!abt.hide">Toggle panel</button>
-<div class="panel animate1" ng-if="abt.hide">
+<div class="panel animate-new"
+     ng-class="{active:!abt.hide}"
+     ng-show="abt.hide">
 	<div class="panel-body ">Hello animation</div>
 </div>
 
@@ -12,7 +14,7 @@
 <input type="text" class="form-control" ng-model="abt.search">
 
 <div class="list-group" infinite-scroll="abt.loadMore()">
-	<div ng-repeat="u in abt.users | filter: abt.search  " class="animate">
+	<div ng-repeat="u in abt.users | filter: abt.search  " class="animate-new">
 		<div class="list-group-item">
 			<div class="row-picture">
 				<img  class="circle" ng-src="{{u.picture}}" alt="icon">
